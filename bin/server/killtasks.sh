@@ -11,6 +11,7 @@ main(){
    sudo pkill -f ${CURRENT_DIR}/ck_bestIP_12htask.sh   
    sudo pkill -f ${CURRENT_DIR}/ck_bestHost_24htask.sh
    sudo pkill -f ${CURRENT_DIR}/down_CNip.sh
+
    sudo pkill -f ${ROOT_DIR}/git-hooks/pre-commit
 }
 
