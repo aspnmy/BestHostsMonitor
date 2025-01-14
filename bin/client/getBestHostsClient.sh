@@ -4,8 +4,10 @@
 
 CURRENT_DIR=$(cd "$(dirname "$0")" || exit; pwd) # 当前脚本所在目录
 PARENT_DIR=$(dirname "$CURRENT_DIR") # 当前脚本所在目录的上级目录
+# https://raw.githubusercontent.com/aspnmy/BestHostsMonitor/refs/heads/main/EN/besthosts.list
 # 公共入口
-wURL=""
+wURL_EN="https://raw.githubusercontent.com/aspnmy/BestHostsMonitor/refs/heads/main"
+wURL_CN="https://raw.githubusercontent.com/aspnmy/BestHostsMonitor/refs/heads/CN"
 # # Cn区
 # Cn_hosts="${wURL}/CN/hosts.list"
 # Cn_sources="${wURL}/CN/sources.list"
@@ -36,26 +38,26 @@ update_hosts_sources_docker(){
 	local myIPCountry
 	myIPCountry=$(get_myIPCountry)
     if [ "$myIPCountry" = "中国" ]; then
-        hosts="${wURL}/CN/hosts.list"
-        sources="${wURL}/CN/sources.list"
-        docker="${wURL}/CN/docker.list"
+        hosts="${wURL_CN}/CN/hosts.list"
+        sources="${wURL_CN}/CN/sources.list"
+        docker="${wURL_CN}/CN/docker.list"
         
     else
-        hosts="${wURL}/EN/hosts.list"
-        sources="${wURL}/EN/sources.list"
-        docker="${wURL}/EN/docker.list"
+        hosts="${wURL_EN}/EN/hosts.list"
+        sources="${wURL_EN}/EN/sources.list"
+        docker="${wURL_EN}/EN/docker.list"
     fi
 
     local updateH
-    updateH=${curl -s $hosts} 
+    updateH=$(curl -s $hosts)
     echo "${updateH}" > /etc/hosts
 
     local updateS
-    updateS=${curl -s $sources} 
+    updateS=$(curl -s $sources)
     echo "${updateS}" > /etc/apt/sources.list
 
     local updateD
-    updateD=${curl -s $docker} 
+    updateD=$(curl -s $docker) 
     echo "${updateD}" > /etc/docker/daemon.json
 
 
