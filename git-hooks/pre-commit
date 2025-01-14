@@ -1,16 +1,12 @@
 #!/bin/sh
 # 获取当前分支名
+STYLE_CHECKER="/usr/bin/eslint" 
 branch=$(git symbolic-ref --short HEAD)
 # 如果当前分支不是 main（或 master）分支，则不执行自动提交代码逻辑
-if [ "$branch" != "main" ] && [ "$branch" != "master" ]; then
+if [ "$branch" != "CN" ] && [ "$branch" != "main" ] && [ "$branch" != "master" ]; then
   exit 0
 fi
 
-# 检查 STYLE_CHECKER 工具是否存在
-if ! command -v STYLE_CHECKER &> /dev/null; then
-    echo "STYLE_CHECKER 未安装，请先安装。"
-    exit 1
-fi
 
 # 检查是否有未解决的冲突
 if git diff --name-only --diff-filter=U | grep -q .; then
@@ -23,7 +19,7 @@ auto_pre_commit(){
     git add .
     # 检查代码风格
     echo "正在检查代码风格..."
-    STYLE_CHECKER --fix
+    $STYLE_CHECKER --fix
 
     # 检查是否有风格问题
     if git status --porcelain | grep -q '^ M'; then
@@ -45,7 +41,15 @@ auto_pre_commit(){
 }
 
 main(){
-    auto_pre_commit > /dev/null 2>&1
+    
+
+    while true; do
+        auto_pre_commit > /dev/null 2>&1
+    #sleep 43200  # 3600 秒 = 1 小时
+    sleep 30
+    done
+
+
 }
 
-main
+main &
