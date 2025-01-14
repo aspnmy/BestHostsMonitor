@@ -23,6 +23,8 @@ auto_pre_commit(){
     # 检查是否有风格问题
     if git status --porcelain | grep -q '^ M'; then
         echo "代码风格检查发现问题，已自动修复。"
+           # 添加修改的文件到暂存区
+        git add .
         # 提交代码并附加默认消息
         git commit -m "Auto Fix commit"
     else
