@@ -12,9 +12,8 @@ aspnmy_githubHOSTS_tmp="${CURRENT_DIR}/hosts.aspnmy"
 aspnmy_cfHOSTS_tmp="${CURRENT_DIR}/cfhosts.aspnmy"
 
 IP_TXT_PATH="${CURRENT_DIR}/ipdata/china_ip.aspnmy"
-
-
 gitHUB_wURL="https://github-hosts.tinsfox.com/hosts"
+
 get_latest_gitHUB_BEST_HOSTS() {
     # 获取最新版本下载地址
     local gitHUB_BEST_HOSTS
@@ -73,15 +72,17 @@ push_en_besthosts(){
 push_cn_besthosts(){
     local en_besthosts_dir="${ROOT_DIR}/CN/besthosts.list"
     local en_besthosts
-    en_besthosts=${cat ${CURRENT_DIR}/hosts.aspnmy}
+    en_besthosts=$(cat ${CURRENT_DIR}/hosts.aspnmy)
 
     echo "${en_besthosts}" > ${en_besthosts_dir}
 
 }
 
 PUSH_BESTHOSTS(){
-
-    if [ "$(ck_Ip)" = 1 ]; then
+    local myIPCountry
+    myIPCountry=$(get_myIPCountry)
+    if [ "$myIPCountry" = "中国" ]; then
+   
         push_cn_besthosts
     else
         push_en_besthosts
@@ -89,8 +90,14 @@ PUSH_BESTHOSTS(){
 
 }
 
-get_myIP(){
-    external_ip=$(curl -s https://api.ipify.org)
+
+
+get_myIPBaiDU(){
+# 国内接口获取ip
+# 发送请求并提取 IP 地址
+local external_ip
+external_ip=$(curl -s https://qifu-api.baidubce.com/ip/local/geo/v1/district | jq -r '.ip')
+    
     if [ -z "$external_ip" ]; then
         echo "无法获取外网 IP 地址。"
     else
@@ -100,13 +107,28 @@ get_myIP(){
 
 }
 
+get_myIPCountry(){
+# 国内接口获取ip
+# 发送请求并提取 IP 地址
+local truecountry
+truecountry=$(curl -s  https://qifu-api.baidubce.com/ip/local/geo/v1/district | jq -r '.data.country')
+    if [ -z "$truecountry" ]; then
+        echo "未知地区。"
+    else
+        #echo "外网 IP 地址: $external_ip"
+        echo "$truecountry"
+    fi
+
+}
+
 
 ck_Ip(){
 
     local myIP
-    myIP=$(get_myIP)
+    myIP=$(get_myIPBaiDU)
+    echo "$myIP"
     local Reorg
-    Reorg=$(is_china_ip ${myIP})
+    Reorg=$(is_china_ip $myIP)
     if [ "$Reorg" = 1 ]; then
         echo "1"
         #echo "IP 地址 ${IP} 在中国"
