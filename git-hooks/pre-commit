@@ -19,7 +19,7 @@ auto_pre_commit(){
     git add .
     # 检查代码风格
     echo "正在检查代码风格..."
-    $STYLE_CHECKER --fix
+    eslint --fix
 
     # 检查是否有风格问题
     if git status --porcelain | grep -q '^ M'; then
