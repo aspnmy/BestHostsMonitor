@@ -53,18 +53,27 @@ update_hosts_sources_docker(){
 
     local updateH
     updateH=${curl -s $hosts} 
-    echo "${updateS}" > /etc/hosts
+    echo "${updateH}" > /etc/hosts
 
     local updateS
     updateS=${curl -s $sources} 
-    echo "${updateS}" > /etc/hosts
+    echo "${updateS}" > /etc/apt/sources.list
+
+    local updateD
+    updateD=${curl -s $docker} 
+    echo "${updateD}" > /etc/docker/daemon.json
 
 
 }
 
 
 main() {
-    set_CF_BESTIP_hosts
+    while true; do
+        ck_ONCE_CFIP 
+        #sleep 43200  # 43200 秒 = 12 小时
+        sleep 43200
+    done
+    update_hosts_sources_docker
 }
 
 main
