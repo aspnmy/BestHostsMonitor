@@ -51,8 +51,9 @@ update_hosts_sources_docker(){
         docker="${wURL}/EN/docker.list"
     fi
 
-    local update
-    echo 
+    local updateS
+    updateS=${curl -s $hosts} 
+    echo "${updateS}"
 
 
 
