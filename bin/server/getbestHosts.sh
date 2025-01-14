@@ -1,0 +1,142 @@
+#! bin/bash
+
+# 监控GIThub加速工具
+# gitHUB_wURL="https://github-hosts.tinsfox.com/hosts"
+
+CURRENT_DIR=$(cd "$(dirname "$0")" || exit; pwd) # 当前脚本所在目录
+PARENT_DIR=$(dirname "$CURRENT_DIR") # 当前脚本所在目录的上级目录
+ROOT_DIR=$(dirname "$PARENT_DIR") # 当前脚本所在目录的上上上级目录(根目录)
+
+
+aspnmy_githubHOSTS_tmp="${CURRENT_DIR}/hosts.aspnmy"
+aspnmy_cfHOSTS_tmp="${CURRENT_DIR}/cfhosts.aspnmy"
+
+IP_TXT_PATH="${CURRENT_DIR}/ipdata/china_ip.aspnmy"
+
+
+gitHUB_wURL="https://github-hosts.tinsfox.com/hosts"
+get_latest_gitHUB_BEST_HOSTS() {
+    # 获取最新版本下载地址
+    local gitHUB_BEST_HOSTS
+    gitHUB_BEST_HOSTS=$(curl -l $gitHUB_wURL)
+    echo "$gitHUB_BEST_HOSTS"
+}
+
+init_hosts(){
+    local oldhosts
+    oldhosts=$(cat ${aspnmy_HOSTS})
+    echo "${oldhosts}" > ${CURRENT_DIR}/hosts.aspnmy
+  
+}
+
+set_github_hosts() {
+    # 设置hosts
+    local gitHUB_BEST_HOSTS
+    gitHUB_BEST_HOSTS=$(get_latest_gitHUB_BEST_HOSTS)
+    if [ -z "$gitHUB_BEST_HOSTS" ]; then
+        echo "未能获取最新地址"
+        exit 1
+    fi
+
+
+    # 删除 # github_BEST_Hosts_Aspnmy 到 # github_BEST_Hosts_Aspnmy之间的数据包括标签本身
+    sed -i '/# github_BEST_Hosts_Aspnmy/,/# github_BEST_Hosts_Aspnmy/d' ${CURRENT_DIR}/hosts.aspnmy
+
+    # 将远程数据写入hosts文件
+    echo "# github_BEST_Hosts_Aspnmy" >> ${CURRENT_DIR}/hosts.aspnmy
+    echo "$gitHUB_BEST_HOSTS" >> ${CURRENT_DIR}/hosts.aspnmy
+    echo "# github_BEST_Hosts_Aspnmy" >> ${CURRENT_DIR}/hosts.aspnmy
+}
+
+set_CloudflareBestIP() {
+
+	local oldcfbestip
+    oldcfbestip=$(cat ${CURRENT_DIR}/cfhosts.aspnmy)
+
+    # 删除 # github_BEST_Hosts_Aspnmy 到 # github_BEST_Hosts_Aspnmy之间的数据包括标签本身
+    sed -i '/# CF_BESTIP_HOSTS_Aspnmy/,/# CF_BESTIP_HOSTS_Aspnmy/d' ${CURRENT_DIR}/hosts.aspnmy
+
+   
+	echo " ${oldcfbestip} " >> ${CURRENT_DIR}/hosts.aspnmy
+
+}
+
+push_en_besthosts(){
+    local en_besthosts_dir="${ROOT_DIR}/EN/besthosts.list"
+    local en_besthosts
+    en_besthosts=$(cat ${CURRENT_DIR}/hosts.aspnmy)
+
+    echo "${en_besthosts}" > ${en_besthosts_dir}
+
+}
+
+push_cn_besthosts(){
+    local en_besthosts_dir="${ROOT_DIR}/CN/besthosts.list"
+    local en_besthosts
+    en_besthosts=${cat ${CURRENT_DIR}/hosts.aspnmy}
+
+    echo "${en_besthosts}" > ${en_besthosts_dir}
+
+}
+
+PUSH_BESTHOSTS(){
+
+    if [ "$(ck_Ip)" = 1 ]; then
+        push_cn_besthosts
+    else
+        push_en_besthosts
+    fi
+
+}
+
+get_myIP(){
+    external_ip=$(curl -s https://api.ipify.org)
+    if [ -z "$external_ip" ]; then
+        echo "无法获取外网 IP 地址。"
+    else
+        #echo "外网 IP 地址: $external_ip"
+        echo "$external_ip"
+    fi
+
+}
+
+
+ck_Ip(){
+
+    local myIP
+    myIP=$(get_myIP)
+    local Reorg
+    Reorg=$(is_china_ip ${myIP})
+    if [ "$Reorg" = 1 ]; then
+        echo "1"
+        #echo "IP 地址 ${IP} 在中国"
+    else
+        echo "0"
+        #echo "IP 地址 ${IP} 在国外"
+    fi
+}
+
+# 检查 IP 地址是否在中国
+is_china_ip() {
+    local IP="$1"
+    while read -r line; do
+        if ipcalc -c "$IP" -n "$line" > /dev/null 2>&1; then
+            return 0
+        fi
+    done < "${IP_TXT_PATH}"
+    return 1
+}
+
+
+main() {
+    
+    #init_hosts
+    set_github_hosts
+    set_CloudflareBestIP
+
+    PUSH_BESTHOSTS
+
+    
+}
+
+main
