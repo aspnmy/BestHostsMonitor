@@ -17,6 +17,10 @@ ff02::2 ip6-allrouters
 
 
 
+ # CF_BESTIP_HOSTS_Aspnmy
+190.93.244.118 *.cloudflare.com
+# 更新时间：2025-01-15 04:17:58
+# CF_BESTIP_HOSTS_Aspnmy 
 # github_BEST_Hosts_Aspnmy
 # github hosts
 # 加速 GitHub 访问
@@ -49,7 +53,7 @@ ff02::2 ip6-allrouters
 140.82.114.18                 github.community
 185.199.110.154               github.githubassets.com
 151.101.1.194                 github.global.ssl.fastly.net
-185.199.108.153               github.io
+185.199.110.153               github.io
 185.199.108.133               github.map.fastly.net
 185.199.110.153               githubstatus.com
 140.82.113.25                 live.github.com
@@ -62,9 +66,5 @@ ff02::2 ip6-allrouters
 140.82.113.22                 education.github.com
 185.199.110.133               private-user-images.githubusercontent.com
 
-# 数据更新时间：1/15/2025, 04:50:22
+# 数据更新时间：1/15/2025, 05:39:40
 # github_BEST_Hosts_Aspnmy
- # CF_BESTIP_HOSTS_Aspnmy
-104.17.197.28 *.cloudflare.com
-# 更新时间：2025-01-14 22:37:10
-# CF_BESTIP_HOSTS_Aspnmy 

@@ -10,7 +10,7 @@ ROOT_DIR=$(dirname "$PARENT_DIR") # 当前脚本所在目录的上上上级目�
 main(){
    bash ${CURRENT_DIR}/ck_bestIP_12htask.sh   
    bash ${CURRENT_DIR}/ck_bestHost_24htask.sh
-   bash ${CURRENT_DIR}/down_CNip_24htask.sh
+   #bash ${CURRENT_DIR}/down_CNip_24htask.sh
    #bash ${ROOT_DIR}/git-hooks/pre-commit
 }
 

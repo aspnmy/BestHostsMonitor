@@ -13,7 +13,7 @@ aspnmy_cfHOSTS_tmp="${CURRENT_DIR}/cfhosts-en.aspnmy"
 
 IP_TXT_PATH="${CURRENT_DIR}/ipdata/china_ip.aspnmy"
 gitHUB_wURL="https://github-hosts.tinsfox.com/hosts"
-source ${CURRENT_DIR}/getbestHosts.sh
+
 get_latest_gitHUB_BEST_HOSTS() {
     # 获取最新版本下载地址
     local gitHUB_BEST_HOSTS
@@ -45,6 +45,10 @@ set_github_hosts() {
     echo "# github_BEST_Hosts_Aspnmy" >> ${CURRENT_DIR}/hosts-en.aspnmy
     echo "$gitHUB_BEST_HOSTS" >> ${CURRENT_DIR}/hosts-en.aspnmy
     echo "# github_BEST_Hosts_Aspnmy" >> ${CURRENT_DIR}/hosts-en.aspnmy
+        # 将远程数据写入hosts文件
+    echo "# github_BEST_Hosts_Aspnmy" >> ${CURRENT_DIR}/hosts-cn.aspnmy
+    echo "$gitHUB_BEST_HOSTS" >> ${CURRENT_DIR}/hosts-cn.aspnmy
+    echo "# github_BEST_Hosts_Aspnmy" >> ${CURRENT_DIR}/hosts-cn.aspnmy
 }
 
 set_CloudflareBestIP() {
@@ -78,11 +82,11 @@ push_en_besthosts(){
 }
 
 push_cn_besthosts(){
-    local en_besthosts_dir="${ROOT_DIR}/CN/besthosts.list"
-    local en_besthosts
-    en_besthosts=$(cat ${CURRENT_DIR}/hosts-cn.aspnmy)
+    local cn_besthosts_dir="${ROOT_DIR}/CN/besthosts.list"
+    local cn_besthosts
+    cn_besthosts=$(cat ${CURRENT_DIR}/hosts-cn.aspnmy)
 
-    echo "${en_besthosts}" > ${en_besthosts_dir}
+    echo "${cn_besthosts}" > ${cn_besthosts_dir}
 
 }
 
