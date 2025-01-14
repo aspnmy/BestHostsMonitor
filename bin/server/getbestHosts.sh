@@ -8,12 +8,12 @@ PARENT_DIR=$(dirname "$CURRENT_DIR") # 当前脚本所在目录的上级目录
 ROOT_DIR=$(dirname "$PARENT_DIR") # 当前脚本所在目录的上上上级目录(根目录)
 
 
-aspnmy_githubHOSTS_tmp="${CURRENT_DIR}/hosts.aspnmy"
-aspnmy_cfHOSTS_tmp="${CURRENT_DIR}/cfhosts.aspnmy"
+aspnmy_githubHOSTS_tmp="${CURRENT_DIR}/hosts-en.aspnmy"
+aspnmy_cfHOSTS_tmp="${CURRENT_DIR}/cfhosts-en.aspnmy"
 
 IP_TXT_PATH="${CURRENT_DIR}/ipdata/china_ip.aspnmy"
 gitHUB_wURL="https://github-hosts.tinsfox.com/hosts"
-
+source ${CURRENT_DIR}/getbestHosts.sh
 get_latest_gitHUB_BEST_HOSTS() {
     # 获取最新版本下载地址
     local gitHUB_BEST_HOSTS
@@ -24,7 +24,7 @@ get_latest_gitHUB_BEST_HOSTS() {
 init_hosts(){
     local oldhosts
     oldhosts=$(cat ${aspnmy_HOSTS})
-    echo "${oldhosts}" > ${CURRENT_DIR}/hosts.aspnmy
+    echo "${oldhosts}" > ${CURRENT_DIR}/hosts-en.aspnmy
   
 }
 
@@ -39,31 +39,39 @@ set_github_hosts() {
 
 
     # 删除 # github_BEST_Hosts_Aspnmy 到 # github_BEST_Hosts_Aspnmy之间的数据包括标签本身
-    sed -i '/# github_BEST_Hosts_Aspnmy/,/# github_BEST_Hosts_Aspnmy/d' ${CURRENT_DIR}/hosts.aspnmy
+    sed -i '/# github_BEST_Hosts_Aspnmy/,/# github_BEST_Hosts_Aspnmy/d' ${CURRENT_DIR}/hosts-en.aspnmy
 
     # 将远程数据写入hosts文件
-    echo "# github_BEST_Hosts_Aspnmy" >> ${CURRENT_DIR}/hosts.aspnmy
-    echo "$gitHUB_BEST_HOSTS" >> ${CURRENT_DIR}/hosts.aspnmy
-    echo "# github_BEST_Hosts_Aspnmy" >> ${CURRENT_DIR}/hosts.aspnmy
+    echo "# github_BEST_Hosts_Aspnmy" >> ${CURRENT_DIR}/hosts-en.aspnmy
+    echo "$gitHUB_BEST_HOSTS" >> ${CURRENT_DIR}/hosts-en.aspnmy
+    echo "# github_BEST_Hosts_Aspnmy" >> ${CURRENT_DIR}/hosts-en.aspnmy
 }
 
 set_CloudflareBestIP() {
-
+	local cfhosts_files
+	local myIPCountry
+	myIPCountry=$(get_myIPCountry)
+    if [ "$myIPCountry" = "中国" ]; then
+   		cfhosts_files="cfhosts-cn.aspnmy"
+        
+    else
+        cfhosts_files="cfhosts-en.aspnmy"
+    fi
 	local oldcfbestip
-    oldcfbestip=$(cat ${CURRENT_DIR}/cfhosts.aspnmy)
+    oldcfbestip=$(cat ${CURRENT_DIR}/${cfhosts_files})
 
     # 删除 # github_BEST_Hosts_Aspnmy 到 # github_BEST_Hosts_Aspnmy之间的数据包括标签本身
-    sed -i '/# CF_BESTIP_HOSTS_Aspnmy/,/# CF_BESTIP_HOSTS_Aspnmy/d' ${CURRENT_DIR}/hosts.aspnmy
+    sed -i '/# CF_BESTIP_HOSTS_Aspnmy/,/# CF_BESTIP_HOSTS_Aspnmy/d' ${CURRENT_DIR}/${cfhosts_files}
 
    
-	echo " ${oldcfbestip} " >> ${CURRENT_DIR}/hosts.aspnmy
+	echo " ${oldcfbestip} " >> ${CURRENT_DIR}/${cfhosts_files}
 
 }
 
 push_en_besthosts(){
     local en_besthosts_dir="${ROOT_DIR}/EN/besthosts.list"
     local en_besthosts
-    en_besthosts=$(cat ${CURRENT_DIR}/hosts.aspnmy)
+    en_besthosts=$(cat ${CURRENT_DIR}/hosts-en.aspnmy)
 
     echo "${en_besthosts}" > ${en_besthosts_dir}
 
@@ -72,7 +80,7 @@ push_en_besthosts(){
 push_cn_besthosts(){
     local en_besthosts_dir="${ROOT_DIR}/CN/besthosts.list"
     local en_besthosts
-    en_besthosts=$(cat ${CURRENT_DIR}/hosts.aspnmy)
+    en_besthosts=$(cat ${CURRENT_DIR}/hosts-cn.aspnmy)
 
     echo "${en_besthosts}" > ${en_besthosts_dir}
 
