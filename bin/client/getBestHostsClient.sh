@@ -16,12 +16,7 @@ wURL=""
 # En_sources="${wURL}/EN/sources.list"
 # En_docker="${wURL}/EN/docker.list"
 
-CF_BESTIP="${CURRENT_DIR}/cfbestip_hosts.txt"
-get_latest_CF_BESTIP() {
-
-    CF_BESTIP=$(cat $CF_BESTIP)
-    echo "$CF_BESTIP"
-}
+# 客户端
 
 get_myIPCountry(){
 # 国内接口获取ip
@@ -69,11 +64,11 @@ update_hosts_sources_docker(){
 
 main() {
     while true; do
-        ck_ONCE_CFIP 
-        #sleep 43200  # 43200 秒 = 12 小时
-        sleep 43200
+        update_hosts_sources_docker > /dev/null 2>&1
+        #sleep 43200  # 86400 秒 = 24 小时
+        sleep 86400
     done
-    update_hosts_sources_docker
+    
 }
 
 main
