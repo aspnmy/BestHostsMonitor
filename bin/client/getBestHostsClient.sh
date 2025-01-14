@@ -7,7 +7,8 @@ PARENT_DIR=$(dirname "$CURRENT_DIR") # 当前脚本所在目录的上级目录
 # https://raw.githubusercontent.com/aspnmy/BestHostsMonitor/refs/heads/main/EN/besthosts.list
 # 公共入口
 wURL_EN="https://raw.githubusercontent.com/aspnmy/BestHostsMonitor/refs/heads/main"
-wURL_CN="https://raw.githubusercontent.com/aspnmy/BestHostsMonitor/refs/heads/CN"
+wURL_CN="https://git.t2be.cn/aspnmy/BestHostsMonitor/raw/branch/CN/CN"
+
 # # Cn区
 # Cn_hosts="${wURL}/CN/hosts.list"
 # Cn_sources="${wURL}/CN/sources.list"
