@@ -43,7 +43,10 @@ auto_pre_commit(){
     fi
 }
 
-auto_push
+auto_push(){
+
+    
+}
 
 main(){
     
