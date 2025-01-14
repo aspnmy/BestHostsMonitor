@@ -41,6 +41,7 @@ auto_pre_commit(){
             git commit -m "Auto commit"
         fi
     fi
+    auto_push
 }
 
 auto_push(){
