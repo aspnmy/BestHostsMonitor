@@ -23,23 +23,19 @@ get_latest_CF_BESTIP() {
     echo "$CF_BESTIP"
 }
 
-set_CF_BESTIP_hosts() {
-    # 设置hosts
-    local CF_BESTIP_HOSTS
-    CF_BESTIP_HOSTS=$(get_latest_CF_BESTIP)
-    if [ -z "$CF_BESTIP_HOSTS" ]; then
-        echo "未能获取最新地址"
-        exit 1
+get_myIPCountry(){
+# 国内接口获取ip
+# 发送请求并提取 IP 地址
+local truecountry
+truecountry=$(curl -s  https://qifu-api.baidubce.com/ip/local/geo/v1/district | jq -r '.data.country')
+    if [ -z "$truecountry" ]; then
+        echo "未知地区。"
+    else
+        #echo "外网 IP 地址: $external_ip"
+        echo "$truecountry"
     fi
-    sed -i '/# CF_BESTIP_HOSTS_Aspnmy/,/# CF_BESTIP_HOSTS_Aspnmy/d' ${PARENT_DIR}/hosts
 
-
-    # 将远程数据写入hosts文件
-    echo "# CF_BESTIP_HOSTS_Aspnmy" >> ${PARENT_DIR}/hosts
-    echo "$CF_BESTIP_HOSTS" >> ${PARENT_DIR}/hosts
-    echo "# CF_BESTIP_HOSTS_Aspnmy" >> ${PARENT_DIR}/hosts
 }
-
 
 
 main() {
