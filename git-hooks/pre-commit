@@ -15,8 +15,7 @@ if git diff --name-only --diff-filter=U | grep -q .; then
 fi
 
 auto_pre_commit(){
-    # 添加修改的文件到暂存区
-    git add .
+ 
     # 检查代码风格
     echo "正在检查代码风格..."
     eslint --fix
