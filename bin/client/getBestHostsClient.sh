@@ -37,6 +37,18 @@ truecountry=$(curl -s  https://qifu-api.baidubce.com/ip/local/geo/v1/district | 
 
 }
 
+ck_Country(){
+	local myIPCountry
+	myIPCountry=$(get_myIPCountry)
+    if [ "$myIPCountry" = "中国" ]; then
+   		cfhosts_files="cfhosts-cn.aspnmy"
+        
+    else
+        cfhosts_files="cfhosts-en.aspnmy"
+    fi
+
+}
+
 
 main() {
     set_CF_BESTIP_hosts
