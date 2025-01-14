@@ -32,3 +32,4 @@
 *.out
 *.app
 
+**/git-hooks/hooks
