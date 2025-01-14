@@ -50,6 +50,8 @@ update_hosts_sources_docker(){
         sources="${wURL}/EN/sources.list"
         docker="${wURL}/EN/docker.list"
     fi
+
+    local update
     echo 
 
 
