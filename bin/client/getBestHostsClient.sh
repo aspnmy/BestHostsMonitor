@@ -37,17 +37,22 @@ truecountry=$(curl -s  https://qifu-api.baidubce.com/ip/local/geo/v1/district | 
 
 }
 
-ck_Country(){
+update_hosts_sources_docker(){
 	local myIPCountry
 	myIPCountry=$(get_myIPCountry)
     if [ "$myIPCountry" = "中国" ]; then
-    hosts="${wURL}/CN/hosts.list"
-    sources="${wURL}/CN/sources.list"
-    Cn_docker="${wURL}/CN/docker.list"
+        hosts="${wURL}/CN/hosts.list"
+        sources="${wURL}/CN/sources.list"
+        docker="${wURL}/CN/docker.list"
         
     else
-        cfhosts_files="cfhosts-en.aspnmy"
+        hosts="${wURL}/EN/hosts.list"
+        sources="${wURL}/EN/sources.list"
+        docker="${wURL}/EN/docker.list"
     fi
+    echo 
+
+
 
 }
 
