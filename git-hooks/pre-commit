@@ -58,9 +58,13 @@ main(){
     
 
     while true; do
-        auto_pre_commit > /dev/null 2>&1
+
+    
+    auto_pre_commit > /dev/null 2>&1
+       
+        
     #sleep 43200  # 3600 秒 = 1 小时
-    sleep 3600
+    sleep 60
     done
 
 
