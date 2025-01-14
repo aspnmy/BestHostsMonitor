@@ -36,7 +36,7 @@ auto_pre_commit(){
         else
             echo "检测到文件变化，自动提交中..."
                # 添加修改的文件到暂存区
-            git add .
+            
             # 提交代码并附加默认消息
             git commit -m "Auto commit"
         fi
