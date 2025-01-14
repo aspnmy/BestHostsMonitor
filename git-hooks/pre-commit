@@ -26,7 +26,7 @@ auto_pre_commit(){
         # 添加修改的文件到暂存区
         git add .
         # 提交代码并附加默认消息
-        git commit -m "Auto Fix commit"
+        git commit -a -m "Auto Fix commit"
     else
         echo "代码风格检查通过。"
         # 检查是否有修改的文件
@@ -36,15 +36,16 @@ auto_pre_commit(){
         else
             echo "检测到文件变化，自动提交中..."
                # 添加修改的文件到暂存区
-            
+            git add .
             # 提交代码并附加默认消息
-            git commit -m "Auto commit"
+            git commit -a -m "Auto commit"
         fi
     fi
     auto_push
 }
 
 auto_push(){
+    git push origin "$branch"
     # 推送代码到远程仓库
     if ! git push origin "$branch"; then
         echo "推送代码失败，请检查网络或权限。"
